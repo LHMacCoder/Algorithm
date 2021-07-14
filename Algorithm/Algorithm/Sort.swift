@@ -5,6 +5,7 @@
 //  Created by LHMacCoder on 2020/8/3.
 //
 
+
 import Foundation
 
 func bubbleSort<T: Comparable>(_ array: [T]) -> [T] {
@@ -15,10 +16,11 @@ func bubbleSort<T: Comparable>(_ array: [T]) -> [T] {
     var sortArray = array
     let count = sortArray.count
 
-    var flag = false
     
     // 两两比较，大者往上冒
     for i in 0...count - 1 {
+        // 优化点：如果一轮下来没有发生交换，说明数组已经有序，可以返回结果
+        var flag = false
         for j in 0..<count - i - 1 {
             if (sortArray[j] > sortArray[j + 1]) {
                 sortArray.swapAt(j, j + 1)
@@ -40,6 +42,7 @@ func selectionSort<T: Comparable>(_ array: [T]) -> [T] {
     let count = sortArray.count
 
     // 假如i为最小值，遍历寻找最小值的下标，然后交换
+    // 由于选择排序减少了交换次数，所以平均性能要优于冒泡排序，
     for i in 0...count - 1 {
         var minIndex = i
         for j in i...count - 1 {
@@ -157,16 +160,19 @@ fileprivate func mergeSort<T: Comparable>(_ array: inout [T], _ begin: Int, _ en
 }
 
 fileprivate func merge<T: Comparable>(_ array: inout [T], _ begin: Int, _ mid: Int, _ end: Int) {
+    // li：左半数组开始下标，le：左边数组结尾下标
     var li = 0, le = mid - begin
-    var ai = begin
+    // ri: 右边数组开始下标，re：右边数组结尾下标
     var ri = mid, re = end
+    // 数组Array下标
+    var ai = begin
     
     // 另存左半数组
     let subArray = Array(array[begin..<mid])
     
     // 当左半数组还没结束时
     while li < le {
-        // 右半数组还没越界，并且左半数组大于右半数组，讲右边数据覆盖左边
+        // 右半数组还没越界，并且左半数组大于右半数组，将右边数据覆盖左边
         if ri < re && subArray[li] > array[ri] {
             array[ai] = array[ri]
             ai += 1
